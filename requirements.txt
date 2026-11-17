@@ -1,4 +1,4 @@
 reportlab>=4.2,<5
-Pillow>=10,<13
+Pillow>=13.0.0,<14
 qrcode>=8,<9
 PyMuPDF>=1.26,<3
