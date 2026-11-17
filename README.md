@@ -16,7 +16,13 @@ Capture RAW **TSPL/TSPL2** print jobs locally and turn them into accurate PDF, P
 
 <div align="center">
 
-![TSC label preview](previa_realista.png)
+![Individual TSC label previews](docs/etiquetas-individuais.png)
+
+</div>
+
+<div align="center">
+
+![TSC emulator dashboard preview](docs/painel-preview.svg)
 
 </div>
 
@@ -117,7 +123,7 @@ The simulator listens only on localhost and does not transmit print data over th
 
 ## License
 
-No license has been selected yet. Until a license is added, all rights are reserved by the copyright holder.
+This project is licensed under the [MIT License](LICENSE).
 
 <div align="center">
 

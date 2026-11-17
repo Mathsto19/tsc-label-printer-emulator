@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Preview of the TSC label printer emulator dashboard</title>
+  <desc id="desc">Dark local dashboard showing emulator status, received jobs and preview actions.</desc>
+  <defs>
+    <linearGradient id="header" x1="0" x2="1">
+      <stop offset="0" stop-color="#172c46"/>
+      <stop offset="1" stop-color="#0e1b31"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#020611" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="700" rx="18" fill="#0b1120"/>
+  <rect x="28" y="28" width="1144" height="644" rx="16" fill="#101d30" stroke="#29415b"/>
+  <rect x="28" y="28" width="1144" height="168" rx="16" fill="url(#header)"/>
+  <text x="70" y="72" fill="#96cbea" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="3">EMULADOR LOCAL · TSPL</text>
+  <text x="70" y="119" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="34" font-weight="700">Impressora virtual TSPL · TTP-245C</text>
+  <text x="70" y="155" fill="#a4b7cc" font-family="Arial,sans-serif" font-size="17">Pré-visualização, validação e depuração de etiquetas antes da impressão.</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="224" width="320" height="104" rx="14" fill="#152439" stroke="#29415b"/>
+    <rect x="414" y="224" width="320" height="104" rx="14" fill="#152439" stroke="#29415b"/>
+    <rect x="758" y="224" width="320" height="104" rx="14" fill="#152439" stroke="#29415b"/>
+  </g>
+  <text x="94" y="258" fill="#a1b5c9" font-family="Arial,sans-serif" font-size="15">Emulador</text>
+  <circle cx="101" cy="291" r="7" fill="#86efac"/>
+  <text x="118" y="298" fill="#86efac" font-family="Arial,sans-serif" font-size="22" font-weight="700">Ligado</text>
+  <text x="438" y="258" fill="#a1b5c9" font-family="Arial,sans-serif" font-size="15">Impressões recebidas</text>
+  <text x="438" y="298" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="30" font-weight="700">118</text>
+  <text x="782" y="258" fill="#a1b5c9" font-family="Arial,sans-serif" font-size="15">Última verificação</text>
+  <text x="782" y="298" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="24" font-weight="700">14:22:11</text>
+  <text x="70" y="382" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="22" font-weight="700">Histórico de impressões</text>
+  <text x="70" y="410" fill="#9bb0c7" font-family="Arial,sans-serif" font-size="14">Arquivos RAW preservados, avisos de fidelidade e prévias em poucos cliques.</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="440" width="1008" height="82" rx="13" fill="#132236" stroke="#29415b"/>
+    <rect x="70" y="538" width="1008" height="82" rx="13" fill="#132236" stroke="#29415b"/>
+  </g>
+  <circle cx="100" cy="481" r="8" fill="#86efac"/>
+  <text x="124" y="477" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="16" font-weight="700">Etiqueta convertida</text>
+  <text x="124" y="501" fill="#a2b5cb" font-family="Arial,sans-serif" font-size="13">103 × 40 mm · 203 DPI · Geometria convertida</text>
+  <rect x="794" y="462" width="122" height="36" rx="8" fill="#287cb1" stroke="#2993d2"/>
+  <text x="855" y="485" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="13" font-weight="700">Ver etiquetas</text>
+  <rect x="930" y="462" width="124" height="36" rx="8" fill="#1c344d" stroke="#45637e"/>
+  <text x="992" y="485" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="13">Baixar PRN</text>
+  <circle cx="100" cy="579" r="8" fill="#ffcb8f"/>
+  <text x="124" y="575" fill="#f3f7fc" font-family="Arial,sans-serif" font-size="16" font-weight="700">Trabalho com aviso</text>
+  <text x="124" y="599" fill="#a2b5cb" font-family="Arial,sans-serif" font-size="13">Prévia preservada · comando não representado visualmente</text>
+  <rect x="794" y="560" width="122" height="36" rx="8" fill="#287cb1" stroke="#2993d2"/>
+  <text x="855" y="583" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="13" font-weight="700">Atualizar prévia</text>
+  <rect x="930" y="560" width="124" height="36" rx="8" fill="#1c344d" stroke="#45637e"/>
+  <text x="992" y="583" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="13">PDF individual</text>
+</svg>
