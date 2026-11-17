@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TSC DA300 Virtual - Central de Impressões</title>
+  <style>
+    :root { font-family: Inter, Segoe UI, Arial, sans-serif; color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:#0b1120; color:#e9f0fc; }
+    header { background:linear-gradient(105deg,#172c46,#0e1b31); border-bottom:1px solid #2f4660; padding:32px max(24px,calc((100vw - 1050px)/2)); }
+    .eyebrow { color:#96cbea; text-transform:uppercase; letter-spacing:2px; font-size:12px; font-weight:800; }
+    h1 { font-size:30px; line-height:1.2; margin:8px 0 10px; }
+    header p { color:#a4b7cc; margin:0; }
+    main { max-width:1050px; margin:auto; padding:28px 24px; }
+    .top { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:28px; }
+    .card { border:1px solid #29415b; border-radius:15px; padding:16px 20px; background:#152439; flex:1; min-width:200px; }
+    .card small { color:#a1b5c9; display:block; margin-bottom:7px; }
+    .card strong { font-size:20px; }
+    .status { color:#86efac; }
+    section h2 { font-size:19px; }
+    .hint { color:#9bb0c7; margin-top:0; font-size:14px; }
+    .job { margin:12px 0; background:#132236; border:1px solid #29415b; padding:17px; border-radius:13px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+    .meta { font-size:13px; color:#a2b5cb; margin-top:8px; }
+    .job strong { font-size:15px; }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; }
+    a { color:#f5fbff; text-decoration:none; padding:9px 13px; border:1px solid #45637e; border-radius:9px; font-size:13px; background:#1c344d; }
+    a.primary { background:#287cb1; border-color:#2993d2; }
+    .warn { font-size:12px; line-height:1.5; color:#ffcb8f; max-width:800px; margin:9px 0 0; white-space:pre-wrap; }
+    .empty { border:1px dashed #3f5972; background:#122033; padding:38px 25px; border-radius:13px; text-align:center; color:#aebfd2; }
+    .label { background:#215742; color:#ccffe5; font-size:12px; padding:3px 8px; border-radius:6px; margin-left:7px; }
+    .label.bad { background:#6b4930; color:#ffe3c4; }
+    footer { color:#8b9fb6; font-size:12px; margin:35px 0 10px; line-height:1.6; }
+    button,input {font:inherit;color:inherit;background:#1c344d;border:1px solid #45637e;border-radius:7px;padding:8px 12px}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}input{width:100px}form{display:flex;align-items:end;gap:12px;flex-wrap:wrap}form label{display:flex;flex-direction:column;gap:5px;font-size:13px}.profile{border:1px solid #76623e;background:#252b32;padding:18px;border-radius:13px;margin-bottom:26px}.profile h2{margin-top:0}.profile p{font-size:13px;line-height:1.5;color:#e1cfaa}.profile summary{cursor:pointer}.profile details{margin-top:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Emulador local · TSPL</div>
+    <h1>Impressora virtual TSPL · TTP-245C</h1>
+    <p>Fontes com largura fixa, deslocamentos TSPL e recorte nas bordas. Fila do Windows: TSC DA300.</p>
+  </header>
+  <main>
+    <div class="top">
+      <div class="card"><small>Emulador</small><strong class="status">● Ligado</strong></div>
+      <div class="card"><small>Impressões recebidas</small><strong id="qty">0</strong></div>
+      <div class="card"><small>Última verificação</small><strong id="checked">—</strong></div>
+    </div>
+    <section class="profile" aria-labelledby="profile-title">
+      <h2 id="profile-title">Correspondência com a impressora</h2>
+      <p id="profile-status">Carregando perfil...</p>
+      <p>Nas etiquetas de 103 × 40 mm, a linha vermelha indica a margem do lote aprovado (X=70 / 8,75 mm). Conteúdo antes dela recebe um aviso. Essa referência não substitui a calibração mecânica.</p>
+      <details><summary>Ajustar deslocamento físico medido</summary>
+        <p>Informe o desvio observado em relação às coordenadas TSPL. Negativo desloca para a esquerda/cima; positivo para a direita/baixo. Este ajuste muda somente a simulação. Salvar não altera prévias antigas.</p>
+        <form id="profile-form"><label>Desvio X (mm)<input id="offset-x" type="number" step="0.125" min="-25.4" max="25.4" value="0" required></label><label>Desvio Y (mm)<input id="offset-y" type="number" step="0.125" min="-25.4" max="25.4" value="0" required></label><button type="submit">Salvar calibração</button><button id="reset-profile" type="button">Remover calibração</button></form>
+      </details>
+      <p id="profile-message" role="status"></p>
+    </section>
+    <section>
+      <h2>Histórico de impressões</h2>
+      <p class="hint">A geometria usa as células das fontes TSPL; o desenho das letras é aproximado. Os PDFs preservam o tamanho do papel. Use “Atualizar prévia” para rever uma captura antiga com o emulador corrigido, sem enviar nada à impressora.</p>
+      <div id="jobs"><div class="empty">Aguardando a primeira impressão...</div></div>
+    </section>
+    <footer>Os arquivos ficam somente neste computador, na pasta <b>Saidas</b>. Se algum comando não puder ser representado, o trabalho é preservado com um aviso de fidelidade. Fechar a janela do terminal desliga a impressora virtual.</footer>
+  </main>
+  <script>
+    function el(name, cls, value) {
+      const n = document.createElement(name);
+      if (cls) n.className = cls;
+      if (value !== undefined) n.textContent = value;
+      return n;
+    }
+    function link(file, label, primary, pdf = primary) {
+      const a = el('a', primary ? 'primary' : '', label);
+      a.href = '/arquivo/' + encodeURIComponent(file);
+      if (pdf) a.href += '#zoom=100';
+      if (!pdf) a.download = file;
+      else a.target = '_blank';
+      return a;
+    }
+    async function post(path,data){
+      const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+      const result=await response.json();if(!response.ok)throw Error(result.erro||'Falha na operação');return result;
+    }
+    async function loadProfile(){
+      try{
+        const response=await fetch('/api/profile',{cache:'no-store'});if(!response.ok)throw Error('Perfil indisponível');
+        const profile=await response.json();
+        document.getElementById('profile-status').textContent=`${profile.model} · ${profile.dots_por_mm} dots/mm · `+(profile.calibrated?`Alinhamento calibrado: X=${profile.offset_x_mm} mm, Y=${profile.offset_y_mm} mm.`:'Alinhamento físico não medido. A prévia não confirma a posição mecânica da impressora.');
+        document.getElementById('offset-x').value=profile.offset_x_mm;document.getElementById('offset-y').value=profile.offset_y_mm;
+      }catch(e){document.getElementById('profile-status').textContent='Esta instância usa o emulador antigo. Reinicie o simulador para carregar a correção.';}
+    }
+    async function saveProfile(calibrated){
+      const message=document.getElementById('profile-message');
+      try{await post('/api/profile',{offset_x_mm:calibrated?Number(document.getElementById('offset-x').value):0,offset_y_mm:calibrated?Number(document.getElementById('offset-y').value):0,calibrated});message.textContent='Perfil salvo. Novas conversões usarão este alinhamento.';await loadProfile();}catch(e){message.textContent=e.message;}
+    }
+    document.getElementById('profile-form').addEventListener('submit',event=>{event.preventDefault();saveProfile(true)});
+    document.getElementById('reset-profile').addEventListener('click',()=>saveProfile(false));
+    async function update() {
+      try {
+        const response = await fetch('/api/jobs', {cache:'no-store'});
+        if (!response.ok) throw Error('HTTP ' + response.status);
+        const jobs = await response.json();
+        document.getElementById('qty').textContent = jobs.length.toString();
+        document.getElementById('checked').textContent = new Date().toLocaleTimeString('pt-BR');
+        const container = document.getElementById('jobs');
+        container.replaceChildren();
+        if (!jobs.length) {
+          container.append(el('div','empty','Aguardando a primeira impressão...'));
+          return;
+        }
+        for (const job of jobs) {
+          const wrap = el('article','job');
+          const body = el('div');
+          body.append(el('strong','',new Date(job.data).toLocaleString('pt-BR')));
+          const current=job.versao_renderizador>=2;
+          body.append(el('span','label' + (!current||job.avisos.length ? ' bad' : ''),!current?'Prévia anterior à correção':job.avisos.length?'Verificar avisos':'Geometria convertida'));
+          body.append(el('div','meta',`${job.paginas} página(s) · ${(job.bytes / 1024).toFixed(1)} KB · ${job.dpi} DPI`));
+          body.append(el('div','meta',!current?'Fonte e deslocamentos antigos: gere uma nova prévia.':job.perfil?.calibrated?`Desvio físico aplicado: X=${job.perfil.offset_x_mm} mm, Y=${job.perfil.offset_y_mm} mm`:'Alinhamento físico não medido · formato dos glifos aproximado'));
+          if (job.tamanhos_mm?.length) {
+            const sizes = job.tamanhos_mm.map(([w,h]) => `${w} × ${h} mm`).join(' / ');
+            body.append(el('div','meta',`Papel: ${sizes} · Escala: 100%`));
+          }
+          if (job.avisos.length) body.append(el('p','warn',job.avisos.join('\n')));
+          const actions = el('div','actions');
+          if (job.visualizacao) {
+            const view = link(job.visualizacao,'Ver etiquetas',true,false);
+            view.removeAttribute('download'); view.target = '_blank'; actions.append(view);
+          }
+          if (job.pdf) actions.append(link(job.pdf,'PDF com demarcação',!job.visualizacao,true));
+          if (job.pdf_individuais) actions.append(link(job.pdf_individuais,'PDF individual',false,true));
+          if (job.previas?.length) actions.append(link(job.previas[0].png,'PNG transparente',false,false));
+          if (job.pdf_impressao) actions.append(link(job.pdf_impressao,'PDF para imprimir',false,true));
+          actions.append(link(job.raw,'Baixar PRN',false));
+          const reprocess=el('button','','Atualizar prévia');
+          reprocess.onclick=async()=>{reprocess.disabled=true;reprocess.textContent='Gerando...';try{const result=await post('/api/reprocess',{id:job.id});await update();if(result.visualizacao)window.open('/arquivo/'+encodeURIComponent(result.visualizacao),'_blank');}catch(e){reprocess.textContent=e.message;reprocess.disabled=false;}};
+          actions.append(reprocess);
+          wrap.append(body,actions);
+          container.append(wrap);
+        }
+      } catch(e) {
+        document.getElementById('checked').textContent = 'Sem conexão';
+      }
+    }
+    loadProfile();update(); setInterval(update,2000);
+  </script>
+</body>
+</html>

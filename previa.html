@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualização das etiquetas</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;color:#20252b;background:#f4f5f7}
+header{padding:24px 32px;background:white;border-bottom:1px solid #d8dde3}h1{font-size:22px;margin:0 0 6px}p{margin:0;color:#59616b}
+nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}button,a{font:inherit;cursor:pointer;padding:9px 14px;border:1px solid #b9c2cb;background:white;border-radius:6px;color:#20252b;text-decoration:none}button[aria-pressed=true]{background:#202c3c;color:white;border-color:#202c3c}
+main{padding:30px 32px;max-width:1400px;margin:auto}section{margin-bottom:32px}h2,figcaption{font-size:13px;font-weight:500;color:#59616b}
+.pair,.single{padding:30px;background-color:#e1e5e9;background-image:conic-gradient(#f4f5f6 25%,transparent 0 50%,#f4f5f6 0 75%,transparent 0);background-size:20px 20px;border-radius:8px;overflow:auto}
+.pair img{display:block;width:103mm;max-width:none;height:auto}.single{display:none;gap:32px;flex-wrap:wrap;align-items:flex-start}.single img{display:block;height:auto;max-width:none;width:50mm}figure{margin:0}figcaption{margin-top:12px}
+body.individual .pair{display:none}body.individual .single{display:flex}body.dark .pair,body.dark .single{background:#34383d}body.dark figcaption{color:#d8dde3}
+.note{margin-top:20px;font-size:13px}input{width:170px;vertical-align:middle}label{margin-left:auto}
+.fidelity{margin-top:18px;padding:14px;border:1px solid #b79056;background:#fff8eb;line-height:1.5;font-size:13px}.fidelity p{margin-top:5px}.warning{color:#9b2918;margin-bottom:0}
+@media(max-width:650px){header,main{padding:20px}.pair,.single{padding:20px}label{margin-left:0}}
+</style>
+<header><h1>Etiquetas</h1><p>Fontes com largura TSPL, recorte no papel e no vão entre etiquetas.</p>{{FIDELIDADE}}
+<nav><button id="pair" aria-pressed="true" onclick="mode(false)">Lado a lado</button><button id="single" aria-pressed="false" onclick="mode(true)">Individuais</button><button onclick="document.body.classList.toggle('dark')">Trocar fundo</button><a href="{{PDF}}" target="_blank">PDF com demarcação</a><a href="{{PDF_INDIVIDUAIS}}" target="_blank">PDF individual</a><label>Zoom <input type="range" min="75" max="250" value="200" oninput="zoom(this.value)"></label></nav></header>
+<main>{{ETIQUETAS}}<p class="note">O quadriculado apenas indica a área transparente. Os arquivos SVG e PNG têm fundo transparente; somente a etiqueta é branca. A escala física na tela depende do monitor.</p></main>
+<script>
+function mode(single){document.body.classList.toggle('individual',single);document.getElementById('pair').setAttribute('aria-pressed',!single);document.getElementById('single').setAttribute('aria-pressed',single)}
+function zoom(value){document.querySelectorAll('.pair img,.single img').forEach(img=>{img.style.width=(Number(img.dataset.mm)*value/100)+'mm'})}
+mode(location.hash === '#individuais'); zoom(200);
+</script>
+</html>

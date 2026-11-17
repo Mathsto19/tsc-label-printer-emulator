@@ -1,0 +1,25 @@
+# Ambientes e caches locais
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.pylint.d/
+.pacote-cache/
+
+# Runtime e pacotes portateis gerados
+runtime/
+Pacotes/
+instaladores/
+
+# Capturas, previews e configuracoes locais
+Saidas/
+perfil-impressora.json
+simulador.log
+
+# Arquivos temporarios do Windows e editores
+*.tmp
+*.temp
+Thumbs.db
+Desktop.ini
+.vscode/

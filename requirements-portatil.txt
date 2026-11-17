@@ -1,0 +1,7 @@
+# Versoes usadas no pacote Windows x64 com CPython 3.12.
+reportlab==4.4.3
+Pillow==12.0.0
+qrcode==8.2
+PyMuPDF==1.26.6
+charset-normalizer==3.4.4
+colorama==0.4.6
