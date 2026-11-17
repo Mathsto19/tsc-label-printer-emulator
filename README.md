@@ -16,7 +16,7 @@ Capture RAW **TSPL/TSPL2** print jobs locally and turn them into accurate PDF, P
 
 <div align="center">
 
-![Individual TSC label previews](docs/etiquetas-individuais.png)
+![Sample TSC label previews](docs/etiquetas-exemplo.png)
 
 </div>
 
